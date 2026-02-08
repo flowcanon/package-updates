@@ -64,7 +64,7 @@ runs:
       shell: bash
 
     - id: pull-request
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v7
       with:
         title: ${{ inputs.title }}
         body: |
