@@ -40,7 +40,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
 
@@ -65,17 +65,16 @@ runs:
 
     - id: package-lock-diff
       run: |
-        npm install -g stevelacey/lock-diff
         echo 'diff<<EOF' >> $GITHUB_OUTPUT
-        lock-diff package-lock.json{.bak,} | sort >> $GITHUB_OUTPUT
+        node ${{ github.action_path }}/lockdiff.js package-lock.json{.bak,} >> $GITHUB_OUTPUT
         echo 'EOF' >> $GITHUB_OUTPUT
-      shell: bash {0}
+      shell: bash
 
     - run: rm package-lock.json.bak
       shell: bash
 
     - id: pull-request
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v7
       with:
         title: ${{ inputs.title }}
         body: |
